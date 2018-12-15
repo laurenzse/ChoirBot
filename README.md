@@ -41,6 +41,6 @@ echo "YOUR_TOKEN_HERE" >> bot_token.txt
 5. **Stop the bot and edit `choir_status.json`**
 
 - Add someone or multiple people as an admin. Admins can configure the bot while it is running through the `/admin` command. Find the `"admins"` field in the json file and add the user ids. Use the `@userinfobot` to find out your own user id.
-- Enter the chat id of your choir's group chat. This id is stored in the `"choir_chat_id"` field in the json file.
+- Enter the chat id of your choir's group chat. This id is stored in the `"choir_chat_id"` field in the json file. When the bot is running, admins can also see every id of the chats the bot is participating in.
 
 6. **Start up the bot - you're ready to go!**
