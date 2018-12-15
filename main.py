@@ -21,9 +21,10 @@ from telegram.ext import (Updater)
 from telegram.utils.request import Request
 
 import utils.message_jobs
+from state import choir_status
 from utils.hooked_bot import HookedBot
 from state.bot_status import singer_watcher, all_members_watcher, all_messages_watcher, logger, \
-    friendly_chatting_strategy, bot_token
+    friendly_chatting_strategy, bot_token, save_configuration
 from conversations import absence_conv, wish_song_conv, confused_comment, remind_conv, admin_conv, thank_you_comment, \
     mechanical_turk
 from jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update
@@ -42,6 +43,9 @@ def main():
     # The friendly chatting strategy greets users when it begins talking to them
     bot = HookedBot(friendly_chatting_strategy, bot_token, request=request)
     updater = Updater(bot=bot)
+
+    # Send startup message to admins
+    send_startup_message(bot)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
@@ -84,6 +88,16 @@ def main():
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
+
+    # Save the current configuration to create config files if not existing
+    save_configuration()
+
+
+def send_startup_message(bot):
+    admins = choir_status.choir_attributes[choir_status.ADMINS]
+
+    for admin_id in admins:
+        bot.send_message(admin_id, "Der Bot wurde soeben gestartet.")
 
 
 if __name__ == '__main__':
