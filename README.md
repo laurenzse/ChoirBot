@@ -28,12 +28,12 @@ At this time, this bot only supports the German language.
 
 3. **Add the bot token file.**
 
-Check out the [Telegram bot introduction](https://core.telegram.org/bots) to see how to request a bot token. To make this bot work best, you need to **disable privacy mode** of this bot's token. This allows the bot to update it's member list automatically based on the acitivty happening in your group chat. No messages are shared outside of the bot's domain.
-
 ```
 touch bot_token.txt
 echo "YOUR_TOKEN_HERE" >> bot_token.txt 
 ```
+
+Check out the [Telegram bot introduction](https://core.telegram.org/bots) to see how to request a bot token. To make this bot work best, you need to **disable privacy mode** of this bot's token. This allows the bot to update it's member list automatically based on the acitivty happening in your group chat. No messages are shared outside of the bot's domain.
 
 4.  **Add a `members.txt` file and optionally add all current members in your choir's group chat.**
 
