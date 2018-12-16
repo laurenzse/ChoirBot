@@ -27,7 +27,7 @@ from state.bot_status import singer_watcher, all_members_watcher, all_messages_w
     friendly_chatting_strategy, bot_token, save_configuration
 from conversations import absence_conv, wish_song_conv, confused_comment, remind_conv, admin_conv, thank_you_comment, \
     mechanical_turk
-from jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update
+from jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update, save_job
 
 
 def error(bot, update, error):
@@ -73,6 +73,9 @@ def main():
     utils.message_jobs.add_job('POST_REHEARSAL_UPDATE',
                                post_rehearsal_update.update,
                                post_rehearsal_update.update_datetime)
+    utils.message_jobs.add_job('SAVE_JOB',
+                               save_job.save,
+                               save_job.next_save_time)
     utils.message_jobs.add_job('NONSENSE',
                                nonsense_update.write_nonsense,
                                nonsense_update.next_nonsense_time)
