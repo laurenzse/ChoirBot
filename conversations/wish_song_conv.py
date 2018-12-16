@@ -10,7 +10,8 @@ from language.phrases import PersonalPhrases
 
 START = 'wunschlied'
 keyboard = [[InlineKeyboardButton("Danke!", callback_data='wish_confirm'),
-             InlineKeyboardButton("Nicht da", callback_data='wish_next')],
+             InlineKeyboardButton("Nicht da", callback_data='wish_absent'),
+             InlineKeyboardButton("Überspringen", callback_data='wish_skip')],
             [InlineKeyboardButton("Abbrechen", callback_data='wish_cancel')]]
 reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -46,14 +47,14 @@ def handle_callback(bot, update, user_data, chat_data):
         query.edit_message_text(text=pp.formulate('illegal-action'))
         return
 
-    if query.data == 'wish_next':
+    if query.data == 'wish_absent':
         complain_to_member(bot, current_next_wish)
 
-        current_next_wish = next_wish_member(current_next_wish)
-        chat_data['current_next_wish'] = current_next_wish
-        answer = pp.formulate('folgereaktion') + ' ' + \
-                 pp.formulate('wahl').format(next_wish_string(current_next_wish))
-        query.edit_message_text(text=answer, reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN)
+        skip_member(chat_data, current_next_wish, pp, query)
+
+    elif query.data == 'wish_skip':
+
+        skip_member(chat_data, current_next_wish, pp, query)
 
     elif query.data == 'wish_confirm':
         query.edit_message_reply_markup(reply_markup=None)
@@ -63,6 +64,14 @@ def handle_callback(bot, update, user_data, chat_data):
     elif query.data == 'wish_cancel':
         query.edit_message_reply_markup(reply_markup=None)
         bot.send_message(query.message.chat_id, pp.formulate('abbrechen'))
+
+
+def skip_member(chat_data, current_next_wish, pp, query):
+    current_next_wish = next_wish_member(current_next_wish)
+    chat_data['current_next_wish'] = current_next_wish
+    answer = pp.formulate('folgereaktion') + ' ' + \
+             pp.formulate('wahl').format(next_wish_string(current_next_wish))
+    query.edit_message_text(text=answer, reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN)
 
 
 def complain_to_member(bot, member):
@@ -106,6 +115,6 @@ def next_member_index(current_member, sorted_members):
 def add_handlers(dispatcher):
     dispatcher.add_handler(CommandHandler(START, wish_song, pass_user_data=True, pass_chat_data=True))
     dispatcher.add_handler(CallbackQueryHandler(handle_callback,
-                                                pattern='^(^wish_confirm$|^wish_next$|^wish_cancel$)',
+                                                pattern='^(^wish_confirm$|^wish_absent$|^wish_skip$|^wish_cancel$)',
                                                 pass_user_data=True,
                                                 pass_chat_data=True))
