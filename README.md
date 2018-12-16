@@ -20,11 +20,15 @@ At this time, this bot only supports the German language.
 ## Setup
 1. **Clone git repository.**
 
-``` git clone https://gitlab.com/Laurenz/choir-chat-bot.git ```
+``` 
+git clone https://gitlab.com/Laurenz/choir-chat-bot.git 
+```
 
 2. **Install dependencies. Note that this is a python3 project.**
 
-``` pip install python-telegram-bot bidict jsonpickle ```
+``` 
+pip install python-telegram-bot bidict jsonpickle 
+```
 
 3. **Add the bot token file.**
 
@@ -37,12 +41,16 @@ Check out the [Telegram bot introduction](https://core.telegram.org/bots) to see
 
 4.  **Add a `members.txt` file and optionally add all current members in your choir's group chat.**
 
-``` touch members.txt ```
+``` 
+touch members.txt 
+```
 
 Telegram's API does not allow disclose the members present in a group chat. The bot will therefore work based on the user activity it sees within the group chat and update it's list accordingly. If your group chat already contains members, you can add these members manually in the `members.txt` file. See `members_sample.txt` for the format expected.
 
 4. **Start the bot to create config files.**
-``` python3 main.py ```
+``` 
+python3 main.py
+```
 
 5. **Stop the bot and edit `choir_status.json`**
 
