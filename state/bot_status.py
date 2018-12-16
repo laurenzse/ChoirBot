@@ -38,7 +38,7 @@ with open(BOT_TOKEN_FILE, 'r') as file:
 
 
 choir_chat_id = choir_status.choir_attributes[choir_status.CHOIR_CHAT_ID]
-singer_watcher = GroupMemberWatcher(group_chat_id=choir_status.choir_attributes[choir_chat_id], handler_group=next_service_handler_group())
+singer_watcher = GroupMemberWatcher(group_chat_id=choir_chat_id, handler_group=next_service_handler_group())
 if configuration_exists(SINGER_WATCHER_FILE):
     singer_watcher.load_members(SINGER_WATCHER_FILE)
 singer_watcher.import_basic_members(SINGERS)
