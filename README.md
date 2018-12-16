@@ -12,7 +12,7 @@ This Telegram choir chat bot supports any choir within their Telegram group chat
 At this time, this bot only supports the German language.
 
 - **/abwesend** to create and manage absences. Only callable in private chats.
-- **/wunschlied** to bring up the wish song iterator.
+- **/wunschlied** to bring up the wish song iterator. Only available during rehearsal hours.
 - **/erinnern** to create and manage reminders.
 - **/admin** to manage the bot's configuration. This command is only available to admins (see below) and allows direct access to the configuration - handle with care.
 
