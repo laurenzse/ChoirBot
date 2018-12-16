@@ -167,6 +167,28 @@ def next_rehearsal_date(after_date):
     return next_rehearsal_datetime(after_datetime).date()
 
 
+def rehearsal_at_datetime(check_datetime, tolerance=0):
+    if check_datetime.weekday() != choir_attributes[REHEARSAL_DAY]:
+        return False
+
+    hour, minute = choir_attributes[REHEARSAL_TIME]
+    rehearsal_start = datetime.datetime(check_datetime.year, check_datetime.month, check_datetime.day,
+                                        hour=hour, minute=minute)
+
+    duration = choir_attributes[REHEARSAL_DURATION]
+
+    rehearsal_end = rehearsal_start + datetime.timedelta(minutes=duration)
+
+    # account for tolerance...
+
+    tolerance_duration = duration * tolerance
+
+    rehearsal_start = rehearsal_start - datetime.timedelta(minutes=tolerance_duration)
+    rehearsal_end = rehearsal_end + datetime.timedelta(minutes=tolerance_duration)
+
+    return rehearsal_start < check_datetime < rehearsal_end
+
+
 def is_admin(user):
     return user.id in choir_attributes[ADMINS]
 
