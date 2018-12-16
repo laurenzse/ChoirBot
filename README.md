@@ -39,13 +39,13 @@ echo "YOUR_TOKEN_HERE" >> bot_token.txt
 
 Check out the [Telegram bot introduction](https://core.telegram.org/bots) to see how to request a bot token. To make this bot work best, you need to **disable privacy mode** of this bot's token. This allows the bot to update it's member list automatically based on the acitivty happening in your group chat. No messages are shared outside of the bot's domain.
 
-4.  **Add a `members.txt` file and optionally add all current members in your choir's group chat.**
+4.  **Add a `members.txt` file and optionally add all current members of your choir's group chat/in your choir.**
 
 ``` 
 touch members.txt 
 ```
 
-Telegram's API does not allow disclose the members present in a group chat. The bot will therefore work based on the user activity it sees within the group chat and update it's list accordingly. If your group chat already contains members, you can add these members manually in the `members.txt` file. See `members_sample.txt` for the format expected.
+Telegram's API does not disclose the members present in a group chat. The bot will therefore work based on the user activity it sees within the group chat and update it's list accordingly. If your group chat already contains members, you can add these members manually in the `members.txt` file. See `members_sample.txt` for the format expected.
 
 4. **Start the bot to create config files.**
 ``` 
