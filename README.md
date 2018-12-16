@@ -27,7 +27,7 @@ git clone https://gitlab.com/Laurenz/choir-chat-bot.git
 2. **Install dependencies. Note that this is a python3 project.**
 
 ``` 
-pip install python-telegram-bot bidict jsonpickle 
+pip3 install python-telegram-bot bidict jsonpickle 
 ```
 
 3. **Add the bot token file.**
