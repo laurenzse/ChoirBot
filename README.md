@@ -14,6 +14,7 @@ At this time, this bot only supports the German language.
 - **/abwesend** to create and manage absences. Only callable in private chats.
 - **/wunschlied** to bring up the wish song iterator.
 - **/erinnern** to create and manage reminders.
+- **/hilfe** to show all available commands
 - **/admin** to manage the bot's configuration. This command is only available to admins (see below) and allows direct access to the configuration - handle with care.
 
 
