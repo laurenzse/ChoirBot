@@ -160,16 +160,16 @@ def add_handlers(dispatcher):
                       RegexHandler(absent_regex(), absence_recognized)],
         states={
             SELECTION: [RegexHandler(new_abs_regexes[0], save_absence_once),
-                        RegexHandler(new_abs_regexes[1], ask_duration_start, pass_user_data=True),
+                        RegexHandler(new_abs_regexes[1], ask_duration_start),
                         RegexHandler(new_abs_regexes[2], cancel),
                         RegexHandler(existing_abs_regexes[0], save_absence_once),
-                        RegexHandler(existing_abs_regexes[1], ask_duration_start, pass_user_data=True),
+                        RegexHandler(existing_abs_regexes[1], ask_duration_start),
                         RegexHandler(existing_abs_regexes[2], delete_existing_absence),
                         RegexHandler(existing_abs_regexes[3], cancel)],
             SELECT_START: [CallbackQueryHandler(ask_duration_end, pass_user_data=True)],
             SELECT_END: [CallbackQueryHandler(confirm_duration, pass_user_data=True)],
             CONFIRM: [RegexHandler(confirm_regexes[0], save_absence_duration, pass_user_data=True),
-                      RegexHandler(confirm_regexes[1], ask_duration_start, pass_user_data=True)]
+                      RegexHandler(confirm_regexes[1], ask_duration_start)]
         },
         fallbacks=[CommandHandler("cancel", cancel)],
         conversation_timeout=CONVERSATION_TIMEOUT,

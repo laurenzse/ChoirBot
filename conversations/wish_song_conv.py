@@ -18,7 +18,7 @@ reply_markup = InlineKeyboardMarkup(keyboard)
 
 def wish_song(bot, update, user_data, chat_data):
 
-    if choir_status.rehearsal_at_datetime(datetime.datetime.now(), 0.25):
+    if choir_status.is_rehearsal_at_datetime(datetime.datetime.now(), 0.25):
         # the current next wishing member which is being presented to the user
         current_next_wish = next_wish_member(choir_status.get_choir_attribute(choir_status.LAST_WISH))
         chat_data['current_next_wish'] = current_next_wish

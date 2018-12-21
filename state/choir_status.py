@@ -1,14 +1,15 @@
 import datetime
 import jsonpickle
+import math
 
 from utils.group_members import BasicGroupMember
 
 CHOIR_STATUS_FILE = 'choir_status.json'
-
 LAST_WISH = 'last_wish'
 ABSENCES = 'absences'
 REMINDERS = 'reminders'
 ADMINS = 'admins'
+GIG = 'gig'
 REHEARSAL_DURATION = 'rehearsal_duration'
 REHEARSAL_DAY = 'rehearsal_day'
 REHEARSAL_TIME = 'rehearsal_time'
@@ -33,6 +34,7 @@ def prepare_attributes():
     prepare_status(ABSENCES, [], choir_attributes)
     prepare_status(REMINDERS, [], choir_attributes)
     prepare_status(ADMINS, [-1], choir_attributes)  # insert user ids here
+    prepare_status(GIG, None, choir_attributes)
 
     prepare_status(REHEARSAL_DURATION, 120, choir_attributes)
     prepare_status(REHEARSAL_DAY, 2, choir_attributes) # default is wednesday, weekday ints start at monday
@@ -51,6 +53,8 @@ def reset_to_default():
     choir_attributes = {}
     prepare_attributes()
 
+
+# ## TUPLE LIST METHODS ##
 
 # we use tuple lists (a list containing tuple pairs of the member and the associated content)
 # for saving different member data; this allows us to serialize the data using json
@@ -73,6 +77,8 @@ def member_in_tuple_list(member, tuple_list):
     maybe_index = get_index_in_tuple_list(member, tuple_list)
     return maybe_index is not None
 
+
+# ## REMINDERS ##
 
 def add_reminder(user, text):
     # use group member since we may not know full details about the user (now or in the future)
@@ -100,6 +106,37 @@ def remove_reminder_of_user(user):
     member = BasicGroupMember.from_telegram_user(user)
     remove_member_from_tuple_list(member, choir_attributes[REMINDERS])
 
+
+# ## GIG ##
+
+def set_gig(date, name):
+    choir_attributes[GIG] = {'date': date,
+                             'name': name}
+
+
+def remove_gig():
+    choir_attributes[GIG] = None
+
+
+def weeks_until_gig():
+    today = datetime.date.today()
+    gig_date = get_gig()['date']
+    delta = gig_date - today
+    return math.floor(delta.days / 7)
+
+
+def get_gig():
+    gig = choir_attributes[GIG]
+    if gig:
+        today = datetime.date.today()
+        gig_date = gig['date']
+        if today > gig_date:
+            remove_gig()
+            return None
+    return gig
+
+
+# ## ABSCENES ##
 
 def add_absence(user, start_date, end_date):
     absence = {'start': start_date, 'end': end_date}
@@ -150,6 +187,8 @@ def absences_at_date(date):
     return current_absences
 
 
+# ## REHEARSAL DATE AND TIME ##
+
 def next_rehearsal_datetime(after_datetime):
     rehearsal_datetime = after_datetime + datetime.timedelta((choir_attributes[REHEARSAL_DAY] - after_datetime.weekday()) % 7)
 
@@ -167,7 +206,7 @@ def next_rehearsal_date(after_date):
     return next_rehearsal_datetime(after_datetime).date()
 
 
-def rehearsal_at_datetime(check_datetime, tolerance=0):
+def is_rehearsal_at_datetime(check_datetime, tolerance=0):
     if check_datetime.weekday() != choir_attributes[REHEARSAL_DAY]:
         return False
 
@@ -189,9 +228,13 @@ def rehearsal_at_datetime(check_datetime, tolerance=0):
     return rehearsal_start < check_datetime < rehearsal_end
 
 
+# ## ADMIN ##
+
 def is_admin(user):
     return user.id in choir_attributes[ADMINS]
 
+
+# ## DATA MANAGEMENT ##
 
 def access_attributes():
     return choir_attributes

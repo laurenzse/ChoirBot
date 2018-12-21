@@ -26,7 +26,7 @@ from utils.hooked_bot import HookedBot
 from state.bot_status import singer_watcher, all_members_watcher, all_messages_watcher, logger, \
     friendly_chatting_strategy, bot_token, save_configuration
 from conversations import absence_conv, wish_song_conv, confused_comment, remind_conv, admin_conv, thank_you_comment, \
-    mechanical_turk, help_conv
+    mechanical_turk, help_conv, gig_conv
 from jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update, save_job
 
 
@@ -61,6 +61,7 @@ def main():
     remind_conv.add_handlers(dp)
     admin_conv.add_handlers(dp)
     help_conv.add_handlers(dp)
+    gig_conv.add_handlers(dp)
 
     # Fun conversations
     confused_comment.add_handlers(dp)

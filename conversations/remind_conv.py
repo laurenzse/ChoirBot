@@ -66,7 +66,7 @@ def add_handlers(dispatcher):
         states={
             ENTERING: [RegexHandler(operations_regexes[1], cancel),
                        RegexHandler(operations_regexes[0], delete_reminder),
-                       MessageHandler(Filters.text, enter_reminder),]
+                       MessageHandler(Filters.text, enter_reminder)]
         },
         fallbacks=[CommandHandler("cancel", cancel)],
         conversation_timeout=CONVERSATION_TIMEOUT
