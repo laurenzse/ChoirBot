@@ -34,3 +34,4 @@ def commands_string(file_name):
 
 def add_handlers(dispatcher):
     dispatcher.add_handler(CommandHandler(START, show_help))
+    dispatcher.add_handler(CommandHandler('/help', show_help))
