@@ -19,14 +19,14 @@ bot.
 
 from telegram.ext import (Updater)
 from telegram.utils.request import Request
-
+import signal
 import utils.message_jobs
 from state import choir_status
 from utils.hooked_bot import HookedBot
 from state.bot_status import singer_watcher, all_members_watcher, all_messages_watcher, logger, \
     friendly_chatting_strategy, bot_token, save_configuration
 from conversations import absence_conv, wish_song_conv, confused_comment, remind_conv, admin_conv, thank_you_comment, \
-    mechanical_turk
+    mechanical_turk, help_conv
 from jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update, save_job
 
 
@@ -60,6 +60,7 @@ def main():
     absence_conv.add_handlers(dp)
     remind_conv.add_handlers(dp)
     admin_conv.add_handlers(dp)
+    help_conv.add_handlers(dp)
 
     # Fun conversations
     confused_comment.add_handlers(dp)
@@ -92,6 +93,9 @@ def main():
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
 
+    # React to a stop event by saving the data
+    signal.signal(signal.SIGINT, signal_handler)
+
     # Save the current configuration to create config files if not existing
     save_configuration()
 
@@ -101,6 +105,11 @@ def send_startup_message(bot):
 
     for admin_id in admins:
         bot.send_message(admin_id, "Der Bot wurde soeben gestartet.")
+
+
+def signal_handler(sig, frame):
+    print('Stopping...')
+    save_configuration()
 
 
 if __name__ == '__main__':
