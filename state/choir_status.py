@@ -118,11 +118,19 @@ def remove_gig():
     choir_attributes[GIG] = None
 
 
-def weeks_until_gig():
+def rehearsals_until_gig():
     today = datetime.date.today()
     gig_date = get_gig()['date']
-    delta = gig_date - today
-    return math.floor(delta.days / 7)
+
+    next_rehearsal = next_rehearsal_date(today)
+
+    rehearsal_date_before_gig = gig_date
+    while rehearsal_date_before_gig.weekday () != choir_attributes[REHEARSAL_DAY]:
+        rehearsal_date_before_gig = rehearsal_date_before_gig - datetime.timedelta(days=1)
+
+    delta = rehearsal_date_before_gig - next_rehearsal
+    rehearsal_number = math.ceil(delta.days / 7) + 1  # add 1 since we also count the first/last rehearsal
+    return rehearsal_number
 
 
 def get_gig():
