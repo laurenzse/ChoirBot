@@ -1,14 +1,20 @@
 import datetime
 from state import choir_status
 from language.phrases import formulate
+from telegram import ParseMode
+import random
+
+POST_PROBABILTY = 0.6
 
 reminder_after = datetime.timedelta(minutes=choir_status.get_choir_attribute(choir_status.REHEARSAL_DURATION) * 0.75)
 
 
 def update(bot, job):
-    bot.send_message(chat_id=choir_status.get_choir_attribute(choir_status.CHOIR_CHAT_ID),
-                     text="/wunschlied verwenden um die Person fürs nächste Wunschlied zu bestimmen, /erinnern verwenden um Erinnerungen für die nächste Probe zu erstellen.",
-                     disable_notification=True)
+    if random.random() < POST_PROBABILTY:
+        bot.send_message(chat_id=choir_status.get_choir_attribute(choir_status.CHOIR_CHAT_ID),
+                         text=formulate('nach-der-probe'),
+                         disable_notification=True,
+                         parse_mode=ParseMode.MARKDOWN)
 
 
 def update_datetime():

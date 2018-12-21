@@ -15,7 +15,7 @@ commands_help = None
 def show_help(bot, update):
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
 
-    update.message.reply_text("Ich zitiere aus meiner Bedienungsanleitung... ", parse_mode=ParseMode.MARKDOWN)
+    update.message.reply_text(pp.formulate('hilfe'))
     update.message.reply_text(commands_string(HELP_FILE_NAME), parse_mode=ParseMode.MARKDOWN)
 
 

@@ -20,11 +20,16 @@ CONVERSATION_TIMEOUT = 60 * 5  # after 5 minutes of inactivity, the conversation
 
 def ask_user(bot, update):
     existing_gig = choir_status.get_gig()
-    # pp = PersonalPhrases(BasicGroupMember.from_telegram_user(user))
+    pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
+
     if existing_gig:
-        update.message.reply_text("Es ist bereits der Auftritt {} eingetragen am {}. Was willst du machen?"
-                                  .format(existing_gig['name'], existing_gig['date'].strftime("%d.%m.")),
-                                  reply_markup=ReplyKeyboardMarkup(gig_operations_keyboard, one_time_keyboard=True))
+        gig_date = existing_gig['date']
+        gig_name = existing_gig['name']
+        update.message.reply_text((pp.formulate('auftritt-schon-vorhanden') +
+                                   " " + pp.formulate('was-machen')).format(gig_name,
+                                                                            gig_date.strftime("%d.%m.")),
+                                  reply_markup=ReplyKeyboardMarkup(gig_operations_keyboard, one_time_keyboard=True),
+                                  parse_mode=ParseMode.MARKDOWN)
 
         return GIG_EXISTING
     else:
@@ -32,8 +37,8 @@ def ask_user(bot, update):
 
 
 def create_gig(bot, update):
-    # pp = PersonalPhrases(BasicGroupMember.from_telegram_user(user))
-    update.message.reply_text("Wie lautet der Name des Auftritts?")
+    pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
+    update.message.reply_text(pp.formulate('wie-ist-auftritt-name'))
     return ENTERING_NAME
 
 
@@ -50,7 +55,7 @@ def name_entered(bot, update, user_data):
     else:
         user_data['gig_name'] = gig_name
 
-        update.message.reply_text('Wann ist der Auftritt?',
+        update.message.reply_text(pp.formulate('wann-ist-auftritt'),
                                   reply_markup=telegramcalendar.create_calendar())
         return ENTERING_DATE
 
@@ -67,7 +72,7 @@ def confirm_gig(bot, update, user_data):
         today = datetime.date.today()
         if today > gig_date:
             bot.send_message(query.message.chat_id,
-                             "Dieses Datum ist bereits vorbei. Wann ist der Auftritt?",
+                             pp.formulate('zeitraum-bereits-vorbei') + " " + pp.formulate('wann-ist-auftritt'),
                              reply_markup=telegramcalendar.create_calendar())
             return ENTERING_DATE
 
@@ -75,7 +80,7 @@ def confirm_gig(bot, update, user_data):
         user_data['gig_date'] = gig_date
 
         bot.send_message(query.message.chat_id,
-                         "Okay, also ist der Auftritt {} am {}?".format(name, gig_date.strftime("%d.%m.")),
+                         pp.formulate('auftritt-bestätigen').format(name, gig_date.strftime("%d.%m.")),
                          reply_markup=ReplyKeyboardMarkup(confirm_keyboard, one_time_keyboard=True),
                          parse_mode=ParseMode.MARKDOWN)
         return CONFIRM
@@ -104,7 +109,9 @@ def cancel(bot, update):
 
 def remove_gig(bot, update):
     choir_status.remove_gig()
-    update.message.reply_text('Ich habe den Auftritt gelöscht.')
+
+    pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
+    update.message.reply_text(pp.formulate('auftritt-gelöscht'))
 
     return ConversationHandler.END
 

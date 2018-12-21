@@ -16,12 +16,13 @@ CONVERSATION_TIMEOUT = 60 * 5  # after 5 minutes of inactivity, the conversation
 
 def ask_user(bot, update):
     existing_reminder = choir_status.get_reminder_of_user(update.effective_user)
-    # pp = PersonalPhrases(BasicGroupMember.from_telegram_user(user))
+    pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
+
     if existing_reminder:
-        update.message.reply_text("Du hast mir gesagt, dass ich an \"{}\" erinnern soll. Ich kann deine Erinnerung löschen oder du kannst mir einfach deine neue Erinnerung schicken.".format(existing_reminder),
+        update.message.reply_text(pp.formulate('erinnerung-schon-vorhanden').format(existing_reminder),
                                   reply_markup=ReplyKeyboardMarkup(reminder_operations_keyboard, one_time_keyboard=True))
     else:
-        update.message.reply_text("An was soll ich vor der nächsten Probe erinnern?")
+        update.message.reply_text(pp.formulate('an-was-erinnern'))
 
     return ENTERING
 
@@ -53,7 +54,9 @@ def cancel(bot, update):
 
 def delete_reminder(bot, update):
     choir_status.remove_reminder_of_user(update.effective_user)
-    update.message.reply_text('Ich habe die Erinnerung gelöscht.')
+
+    pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
+    update.message.reply_text(pp.formulate('erinnerung-gelöscht'))
 
     return ConversationHandler.END
 
