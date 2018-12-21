@@ -6,6 +6,7 @@ This Telegram choir chat bot supports any choir within their Telegram group chat
 - **Manage absences**: Choir members can enter their absences and the bot will gather all registered absences before a rehearsal. Absences can either be only for the next rehearsal or a longer duration.
 - **Create reminders**: Choir members can enter a text reminder and the bot will remind the choir before the next rehearsal of it.
 - **Wish song**: Is your choir practicing wish songs at the end of each rehearsal? This bot can tell you who is next for wishing. A member list is updated according to the group chat.
+- **Gig countdown**: Keep track of your rehearsal until the next gig. Tell the bot the date of your next gig and it will keep you up to date with the number of the remaining rehearsals.
 
 ## Commands
 
