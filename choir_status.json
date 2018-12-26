@@ -1,0 +1,22 @@
+{
+    "absences": [],
+    "admins": [],
+    "choir_chat_id": -1,
+    "gig": null,
+    "last_wish": {
+        "first_name": "\u0000",
+        "full_name": "\u0000",
+        "id": -1,
+        "py/object": "utils.group_members.BasicGroupMember",
+        "username": ""
+    },
+    "rehearsal_day": 2,
+    "rehearsal_duration": 120,
+    "rehearsal_time": {
+        "py/tuple": [
+            18,
+            30
+        ]
+    },
+    "reminders": []
+}
