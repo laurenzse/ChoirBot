@@ -5,7 +5,6 @@ members.txt
 
 # State data #
 ######################
-choir_status.json
 working_data/*
 
 # IDE generated files #
