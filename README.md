@@ -46,7 +46,7 @@ Check out the [Telegram bot introduction](https://core.telegram.org/bots) to see
 4.  **Add a `members.txt` file and optionally add all current members of your choir's group chat/in your choir.**
 
 ``` 
-touch src/members.txt 
+touch data/members.txt 
 ```
 
 Telegram's API does not disclose the members present in a group chat. The bot will therefore work based on the user activity it sees within the group chat and update it's list accordingly. If your group chat already contains members, you can add these members manually in the `members.txt` file. See `members_sample.txt` for the format expected.
