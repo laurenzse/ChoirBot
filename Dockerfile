@@ -1,20 +1,17 @@
-FROM alpine
+FROM python:3.6
 LABEL maintainer="LaurenzSeidel@yahoo.de"
 
-RUN apk --update --no-cache add \
-      python3 \
-      ca-certificates \
-      openssl
+# Create app directory
+WORKDIR /app
+# Create the volume
+VOLUME /data
 
-RUN pip3 install --upgrade pip \
-    && pip install \
-      python-telegram-bot \
-      bidict \
-      jsonpickle
+# Install app dependencies
+COPY src/requirements.txt ./
 
-COPY src /var/local/choirbot
-WORKDIR  /var/local/choirbot
+RUN pip install -r requirements.txt
 
-ENTRYPOINT ["/var/local/choirbot/docker-entrypoint.sh"]
+# Bundle app source
+COPY src /app
 
-CMD [ "/usr/bin/python3", "telebot.py" ]
+CMD [ "python", "main.py" ]
