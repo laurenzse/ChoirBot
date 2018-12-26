@@ -5,7 +5,7 @@ members.txt
 
 # State data #
 ######################
-working_data/*
+data/*
 
 # IDE generated files #
 ######################
