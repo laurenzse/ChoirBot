@@ -1,6 +1,7 @@
 import datetime
 import jsonpickle
 import math
+import json
 
 from utils.group_members import BasicGroupMember
 
@@ -33,7 +34,7 @@ def prepare_attributes():
     prepare_status(LAST_WISH, BasicGroupMember(name=str(chr(0))), choir_attributes)
     prepare_status(ABSENCES, [], choir_attributes)
     prepare_status(REMINDERS, [], choir_attributes)
-    prepare_status(ADMINS, [-1], choir_attributes)  # insert user ids here
+    prepare_status(ADMINS, [], choir_attributes)
     prepare_status(GIG, None, choir_attributes)
 
     prepare_status(REHEARSAL_DURATION, 120, choir_attributes)
@@ -42,7 +43,7 @@ def prepare_attributes():
     # prepare_status('rehearsal_day', 3, loaded_status) # test input
     # prepare_status('rehearsal_time', (22, 30), loaded_status)
 
-    prepare_status(CHOIR_CHAT_ID, -1, choir_attributes)  # insert a chat id here
+    prepare_status(CHOIR_CHAT_ID, -1, choir_attributes)
 
 
 prepare_attributes()
@@ -262,6 +263,8 @@ def set_choir_attribute(item_name, value):
 
 
 def save_data():
-    out_json_string = jsonpickle.encode(choir_attributes)
+    # out_json_string = jsonpickle.encode(choir_attributes)
+    # workaround to pretty print the json
+    out_json_string = json.dumps(json.loads(jsonpickle.encode(choir_attributes)), indent=4, sort_keys=True)
     with open(CHOIR_STATUS_FILE, 'w') as outfile:
         outfile.write(out_json_string)
