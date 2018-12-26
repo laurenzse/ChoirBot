@@ -31,7 +31,7 @@ git update-index --skip-worktree data/choir_status.json
 2. **Install dependencies. Note that this is a python3 project.**
 
 ``` 
-pip3 install python-telegram-bot bidict jsonpickle 
+pip install -r requirements.txt
 ```
 
 3. **Add the bot token file.**
