@@ -17,17 +17,19 @@ Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
 
+import signal
 from telegram.ext import (Updater)
 from telegram.utils.request import Request
-import signal
-import utils.message_jobs
-from state import choir_status
-from utils.hooked_bot import HookedBot
-from state.bot_status import singer_watcher, all_members_watcher, all_messages_watcher, logger, \
+
+from src.conversations import absence_conv, wish_song_conv, confused_comment, remind_conv, admin_conv, mechanical_turk, \
+    help_conv, gig_conv
+from src.jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update, save_job
+from src.state import choir_status
+from src.state.bot_status import singer_watcher, all_members_watcher, all_messages_watcher, logger, \
     friendly_chatting_strategy, bot_token, save_configuration
-from conversations import absence_conv, wish_song_conv, confused_comment, remind_conv, admin_conv, thank_you_comment, \
-    mechanical_turk, help_conv, gig_conv
-from jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update, save_job
+from src.utils.hooked_bot import HookedBot
+from src.conversations import thank_you_comment
+from src import utils
 
 
 def error(bot, update, error):
@@ -70,17 +72,17 @@ def main():
 
     utils.message_jobs.job_queue = updater.job_queue
     utils.message_jobs.add_job('PRE_REHEARSAL_UPDATE',
-                               pre_rehearsal_update.update,
-                               pre_rehearsal_update.update_datetime)
+                                   pre_rehearsal_update.update,
+                                   pre_rehearsal_update.update_datetime)
     utils.message_jobs.add_job('POST_REHEARSAL_UPDATE',
-                               post_rehearsal_update.update,
-                               post_rehearsal_update.update_datetime)
+                                   post_rehearsal_update.update,
+                                   post_rehearsal_update.update_datetime)
     utils.message_jobs.add_job('SAVE_JOB',
-                               save_job.save,
-                               save_job.next_save_time)
+                                   save_job.save,
+                                   save_job.next_save_time)
     utils.message_jobs.add_job('NONSENSE',
-                               nonsense_update.write_nonsense,
-                               nonsense_update.next_nonsense_time)
+                                   nonsense_update.write_nonsense,
+                                   nonsense_update.next_nonsense_time)
     utils.message_jobs.check_message_jobs()
 
     # log all errors

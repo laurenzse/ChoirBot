@@ -7,7 +7,7 @@
         "first_name": "\u0000",
         "full_name": "\u0000",
         "id": -1,
-        "py/object": "utils.group_members.BasicGroupMember",
+        "py/object": "src.utils.group_members.BasicGroupMember",
         "username": ""
     },
     "rehearsal_day": 2,

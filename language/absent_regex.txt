@@ -1,1 +1,0 @@
-.*((?i)(nicht)[^\.\!\?\,]*(?i)(dabei|kommen|gesund|da)|(?i)(wird)[^\.\!\?\,]*(?i)(nichts)|(?i)(krank)|(?i)(kann)[^\.\!\?\,]*(?i)(nicht)).*
