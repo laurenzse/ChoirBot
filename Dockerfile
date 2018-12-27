@@ -9,8 +9,12 @@ VOLUME /data
 # Install app dependencies
 COPY src/requirements.txt ./
 
-RUN apt-get install de_DE
 RUN pip install -r requirements.txt
+
+# Install locales
+RUN apt-get clean && apt-get update && apt-get install -y locales
+RUN locale-gen de_DE.UTF-8
+ENV LANG='de_DE.UTF-8' LANGUAGE='de_DE:de' LC_ALL='de_DE.UTF-8'
 
 # Bundle app source
 COPY src/* /app/src/

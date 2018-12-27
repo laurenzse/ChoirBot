@@ -1,13 +1,15 @@
 {
     "absences": [],
-    "admins": [],
-    "choir_chat_id": -1,
+    "admins": [
+        120591416
+    ],
+    "choir_chat_id": -306634312,
     "gig": null,
     "last_wish": {
         "first_name": "\u0000",
         "full_name": "\u0000",
         "id": -1,
-        "py/object": "src.utils.group_members.BasicGroupMember",
+        "py/object": "utils.group_members.BasicGroupMember",
         "username": ""
     },
     "rehearsal_day": 2,
