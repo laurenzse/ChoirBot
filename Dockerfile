@@ -9,9 +9,10 @@ VOLUME /data
 # Install app dependencies
 COPY src/requirements.txt ./
 
+RUN apt-get install de_DE
 RUN pip install -r requirements.txt
 
 # Bundle app source
 COPY src/* /app/src/
 
-CMD [ "python", "src/main.py" ]
+CMD [ "python", "-m src.main" ]
