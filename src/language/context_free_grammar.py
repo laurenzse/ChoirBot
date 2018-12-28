@@ -41,7 +41,7 @@ class ContextFreeGrammar(object):
                 grammar.add_productions_from_file('./grammars/exam.cfg')
         """
         grammar = u''
-        with open(grammar_file_path) as f:
+        with open(grammar_file_path, encoding="utf-8") as f:
             for line in f.read().splitlines():
                 if not line.lstrip().startswith('//'):
                     grammar += ' ' + line
