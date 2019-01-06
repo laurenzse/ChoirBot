@@ -1,0 +1,5 @@
+abwesend Abwesenheit hinzufügen
+wunschlied Wunschlied-Iterator starten
+erinnern Erinnerung für die nächste Probe erstellen
+auftritt Auftritt hinzufügen
+hilfe Hilfe anzeigen
