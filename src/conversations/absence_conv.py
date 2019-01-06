@@ -75,7 +75,7 @@ def delete_existing_absence(bot, update):
     return ConversationHandler.END
 
 
-def ask_duration_start(bot, update, user_data):
+def ask_duration_start(bot, update):
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
     update.message.reply_text(pp.formulate('ab-wann-abwesend'),
                               reply_markup=telegramcalendar.create_calendar())
