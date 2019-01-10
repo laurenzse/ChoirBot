@@ -156,6 +156,7 @@ def add_absence(user, start_date, end_date):
 
 
 def get_absence_of_user(user):
+    clean_up_absences()
     member = BasicGroupMember.from_telegram_user(user)
     member_index = get_index_in_tuple_list(member, choir_attributes[ABSENCES])
     if member_index is not None:
@@ -185,6 +186,7 @@ def clean_up_absences():
 
 
 def absences_at_date(date):
+    clean_up_absences()
     current_absences = []
 
     for (absent_member, absence) in choir_attributes[ABSENCES]:

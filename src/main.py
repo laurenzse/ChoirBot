@@ -56,8 +56,9 @@ def main():
 
     utils.message_jobs.job_queue = updater.job_queue
     utils.message_jobs.add_job('PRE_REHEARSAL_UPDATE',
-                                   pre_rehearsal_update.update,
+                                   pre_rehearsal_update.post_update,
                                    pre_rehearsal_update.update_datetime)
+    pre_rehearsal_update.add_handlers(dp)  # needs dispatcher for inline buttons for direct updating
     utils.message_jobs.add_job('POST_REHEARSAL_UPDATE',
                                    post_rehearsal_update.update,
                                    post_rehearsal_update.update_datetime)
