@@ -40,7 +40,7 @@ def enter_reminder(bot, update):
         return ENTERING
     else:
         choir_status.remove_reminder_of_user(update.effective_user)  # first try to remove an existing reminder
-        next_rehearsal = choir_status.next_rehearsal_date(datetime.date.today())
+        next_rehearsal = choir_status.next_rehearsal_datetime(datetime.datetime.now()).date()
         choir_status.add_reminder(update.effective_user, update.message.text, next_rehearsal)
 
         update.message.reply_text(pp.formulate('etwas-gemerkt'))
