@@ -26,6 +26,6 @@ ENV LANGUAGE de_DE:de
 ENV LC_ALL de_DE.UTF-8
 
 # Bundle app source
-COPY src/* /app/src/
+COPY src/* /app/src/x
 
-CMD [ "python", "-m src.main" ]
+CMD python -m src.main
