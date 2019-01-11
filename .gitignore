@@ -7,6 +7,12 @@ members.txt
 ######################
 /data
 
+# Python cached files #
+######################
+/data
+*.pyc
+*.pyo
+
 # IDE generated files #
 ######################
 .idea/*
