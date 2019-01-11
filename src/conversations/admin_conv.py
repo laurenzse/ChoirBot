@@ -82,7 +82,7 @@ def recently_received_message(bot, update):
     messages = bot_status.all_messages_watcher.recent_messages()
 
     def message_object_summary(message):
-        summary = '"{}" from {} with id {} in chat with id {} of type {}'.format(message.text,
+        summary = '"{}" from {}, user-id: {}, chat-id: {}, chat-type: {}'.format(message.text,
                                                                                  message.from_user.full_name,
                                                                                  message.from_user.id,
                                                                                  message.chat.id,
