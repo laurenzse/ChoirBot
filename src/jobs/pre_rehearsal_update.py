@@ -33,10 +33,10 @@ def absence_text():
 
 def reminder_text():
     text = ""
-    reminders = choir_status.get_reminders()
+    next_rehearsal = choir_status.next_rehearsal_date(datetime.date.today())
+    reminders = choir_status.reminders_at_date(next_rehearsal)
     if reminders:
-        text = "Mir wurde gesagt, dass ich an gewisse Sachen erinnern soll.\n\n" + generate_reminders_list(reminders)
-    choir_status.clear_reminders()
+        text = formulate('an-sachen-erinnern') + "\n\n" + generate_reminders_list(reminders)
 
     return text
 
@@ -108,8 +108,9 @@ def add_handlers(dispatcher):
     dispatcher.add_handler(CallbackQueryHandler(handle_absence_switch_callback,
                                                 pattern='^change_absence$'))
 
+
 def update_datetime():
-    now_after_reminder = datetime.datetime.now() + reminder_before
-    reminder_datetime = choir_status.next_rehearsal_datetime(now_after_reminder) - reminder_before
-    return reminder_datetime
-    # return datetime.datetime.now() + datetime.timedelta(seconds=10)
+    # now_after_reminder = datetime.datetime.now() + reminder_before
+    # reminder_datetime = choir_status.next_rehearsal_datetime(now_after_reminder) - reminder_before
+    # return reminder_datetime
+    return datetime.datetime.now() + datetime.timedelta(seconds=10)

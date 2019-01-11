@@ -82,24 +82,39 @@ def member_in_tuple_list(member, tuple_list):
 
 # ## REMINDERS ##
 
-def add_reminder(user, text):
+def add_reminder(user, text, date):
     # use group member since we may not know full details about the user (now or in the future)
-    choir_attributes[REMINDERS].append((BasicGroupMember.from_telegram_user(user), text))
+    choir_attributes[REMINDERS].append((BasicGroupMember.from_telegram_user(user), (text, date)))
 
 
-def clear_reminders():
-    choir_attributes[REMINDERS] = []
+def reminders_at_date(date):
+    clean_up_reminders()
+    current_reminders = []
+
+    for (reminding_member, (text, reminder_date)) in choir_attributes[REMINDERS]:
+        if reminder_date == date:
+            current_reminders.append((reminding_member, text))
+
+    return current_reminders
 
 
-def get_reminders():
-    return choir_attributes[REMINDERS]
+def clean_up_reminders():
+    today = datetime.date.today()
+    remove = []
+
+    for (reminding_member, (text, reminder_date)) in choir_attributes[REMINDERS]:
+        if reminder_date < today:
+            remove.append(reminding_member)
+
+    for member in remove:
+        remove_reminder_of_user(member)
 
 
 def get_reminder_of_user(user):
     member = BasicGroupMember.from_telegram_user(user)
     member_index = get_index_in_tuple_list(member, choir_attributes[REMINDERS])
     if member_index is not None:
-        return choir_attributes[REMINDERS][member_index][1]
+        return choir_attributes[REMINDERS][member_index][1][0]
     else:
         return None
 

@@ -1,3 +1,4 @@
+import datetime
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import Filters, CommandHandler, ConversationHandler, MessageHandler, RegexHandler
 
@@ -39,7 +40,8 @@ def enter_reminder(bot, update):
         return ENTERING
     else:
         choir_status.remove_reminder_of_user(update.effective_user)  # first try to remove an existing reminder
-        choir_status.add_reminder(update.effective_user, update.message.text)
+        next_rehearsal = choir_status.next_rehearsal_date(datetime.date.today())
+        choir_status.add_reminder(update.effective_user, update.message.text, next_rehearsal)
 
         update.message.reply_text(pp.formulate('etwas-gemerkt'))
         return ConversationHandler.END
