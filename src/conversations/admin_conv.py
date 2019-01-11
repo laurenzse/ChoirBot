@@ -1,4 +1,4 @@
-from telegram import ReplyKeyboardMarkup
+from telegram import ReplyKeyboardMarkup, constants
 from telegram.ext import MessageHandler, CommandHandler, ConversationHandler, RegexHandler, Filters
 
 from src.language.phrases import PersonalPhrases
@@ -42,7 +42,7 @@ def ask_for_item_to_print(bot, update):
 
 def print_item(bot, update):
     item_name = update.message.text
-    update.message.reply_text(str(choir_status.get_choir_attribute(item_name)))
+    update.message.reply_text(str(choir_status.get_choir_attribute(item_name))[-constants.MAX_MESSAGE_LENGTH:])
     return present_selection(bot, update)
 
 

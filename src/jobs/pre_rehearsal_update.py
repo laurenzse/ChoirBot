@@ -105,7 +105,6 @@ def refresh_posted_update(bot):
                           reply_markup=reply_markup)
 
 
-
 def toggle_absences_for_member(member):
     next_date = choir_status.next_rehearsal_date(datetime.date.today())
     absences = choir_status.absences_at_date(next_date)
