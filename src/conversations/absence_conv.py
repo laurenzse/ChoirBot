@@ -135,8 +135,8 @@ def confirm_duration(bot, update, user_data):
 
 
 def save_absence_duration(bot, update, user_data):
-    start_date = user_data['absence_conv_start']
-    end_date = user_data['absence_conv_end']
+    start_date = user_data['absence_conv_start'].date()
+    end_date = user_data['absence_conv_end'].date()
 
     choir_status.remove_absence_of_user(update.effective_user)  # first try to remove an existing absence
     choir_status.add_absence(update.effective_user, start_date, end_date)
