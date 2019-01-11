@@ -1,5 +1,5 @@
 import logging
-import os
+import os, time
 
 from src.state import choir_status
 from src.utils.group_members import GroupMemberWatcher
@@ -21,6 +21,10 @@ logger = logging.getLogger(__name__)
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
+
+# set timezone
+os.environ['TZ'] = 'Europe/Berlin'
+time.tzset()
 
 
 def next_service_handler_group():
