@@ -9,7 +9,6 @@ members.txt
 
 # Python cached files #
 ######################
-/data
 *.pyc
 *.pyo
 
