@@ -121,7 +121,7 @@ def add_handlers(dispatcher):
 
 
 def update_datetime():
-    # now_after_reminder = datetime.datetime.now() + reminder_before
-    # reminder_datetime = choir_status.next_rehearsal_datetime(now_after_reminder) - reminder_before
-    # return reminder_datetime
-    return datetime.datetime.now() + datetime.timedelta(seconds=30)
+    now_after_reminder = datetime.datetime.now() + reminder_before
+    reminder_datetime = choir_status.next_rehearsal_datetime(now_after_reminder) - reminder_before
+    return reminder_datetime
+    # return datetime.datetime.now() + datetime.timedelta(seconds=30)
