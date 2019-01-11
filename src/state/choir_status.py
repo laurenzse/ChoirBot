@@ -111,6 +111,7 @@ def clean_up_reminders():
 
 
 def get_reminder_of_user(user):
+    clean_up_reminders()
     member = BasicGroupMember.from_telegram_user(user)
     member_index = get_index_in_tuple_list(member, choir_attributes[REMINDERS])
     if member_index is not None:
