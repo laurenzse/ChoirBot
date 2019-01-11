@@ -90,7 +90,7 @@ def recently_received_message(bot, update):
         return summary
 
     string_messages = '\n\n'.join(list(map(message_object_summary, messages)))
-    update.message.reply_text(string_messages)
+    update.message.reply_text(string_messages[-constants.MAX_MESSAGE_LENGTH:])
 
     return present_selection(bot, update)
 
