@@ -10,7 +10,7 @@ reminder_before = datetime.timedelta(minutes=60)
 
 keyboard = [[InlineKeyboardButton("Meine Anwesenheit ändern", callback_data='change_absence')]]
 reply_markup = InlineKeyboardMarkup(keyboard)
-last_sent_message_id = None
+posted_update_message_id = None
 
 
 def update_text():
@@ -66,7 +66,7 @@ def generate_reminders_list(reminders):
 
 
 def post_update(bot, job):
-    global last_sent_message_id
+    global posted_update_message_id
     chat_id = choir_status.get_choir_attribute(choir_status.CHOIR_CHAT_ID)
 
     full_update_text = update_text()
@@ -75,13 +75,13 @@ def post_update(bot, job):
                                     text=full_update_text,
                                     reply_markup=reply_markup)
 
-    last_sent_message_id = sent_message.message_id
+    posted_update_message_id = sent_message.message_id
 
 
 def handle_absence_switch_callback(bot, update):
     query = update.callback_query
 
-    if query.message.message_id != last_sent_message_id:
+    if query.message.message_id != posted_update_message_id:
         pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
         query.edit_message_reply_markup(reply_markup=None)
         query.edit_message_text(text=pp.formulate('illegal-action'))
@@ -91,7 +91,19 @@ def handle_absence_switch_callback(bot, update):
 
     toggle_absences_for_member(member)
 
-    query.edit_message_text(text=update_text(), reply_markup=reply_markup)
+    refresh_posted_update(bot)
+
+
+def refresh_posted_update(bot):
+    if not posted_update_message_id:
+        return
+
+    chat_id = choir_status.get_choir_attribute(choir_status.CHOIR_CHAT_ID)
+    bot.edit_message_text(text=update_text(),
+                          message_id=posted_update_message_id,
+                          chat_id=chat_id,
+                          reply_markup=reply_markup)
+
 
 
 def toggle_absences_for_member(member):
@@ -113,4 +125,4 @@ def update_datetime():
     # now_after_reminder = datetime.datetime.now() + reminder_before
     # reminder_datetime = choir_status.next_rehearsal_datetime(now_after_reminder) - reminder_before
     # return reminder_datetime
-    return datetime.datetime.now() + datetime.timedelta(seconds=10)
+    return datetime.datetime.now() + datetime.timedelta(seconds=30)

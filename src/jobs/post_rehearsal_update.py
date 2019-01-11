@@ -4,13 +4,14 @@ from telegram import ParseMode
 
 from src.language.phrases import formulate
 from src.state import choir_status
-
+from src.jobs import pre_rehearsal_update
 POST_PROBABILTY = 0.6
 
 reminder_after = datetime.timedelta(minutes=choir_status.get_choir_attribute(choir_status.REHEARSAL_DURATION) * 0.75)
 
 
 def update(bot, job):
+    pre_rehearsal_update.posted_update_message_id = None
     if random.random() < POST_PROBABILTY:
         bot.send_message(chat_id=choir_status.get_choir_attribute(choir_status.CHOIR_CHAT_ID),
                          text=formulate('nach-der-probe'),

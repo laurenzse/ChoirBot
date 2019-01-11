@@ -7,6 +7,7 @@ from src.language.phrases import PersonalPhrases
 from src.state import choir_status
 from src.utils.group_members import BasicGroupMember
 import src.datepicker.telegramcalendar as telegramcalendar
+from src.jobs import pre_rehearsal_update
 
 ABSENT_REGEX_FILE = 'src/language/absent_regex.txt'
 
@@ -59,6 +60,7 @@ def save_absence_once(bot, update):
 
     choir_status.remove_absence_of_user(update.effective_user)  # first try to remove an existing absence
     choir_status.add_absence(update.effective_user, next_rehearsal, day_after)
+    pre_rehearsal_update.refresh_posted_update(bot)
 
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
     update.message.reply_text(pp.formulate('etwas-gemerkt'))
@@ -71,6 +73,7 @@ def delete_existing_absence(bot, update):
 
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
     update.message.reply_text(pp.formulate('doch-da'))
+    pre_rehearsal_update.refresh_posted_update(bot)
 
     return ConversationHandler.END
 
@@ -137,6 +140,7 @@ def save_absence_duration(bot, update, user_data):
 
     choir_status.remove_absence_of_user(update.effective_user)  # first try to remove an existing absence
     choir_status.add_absence(update.effective_user, start_date, end_date)
+    pre_rehearsal_update.refresh_posted_update(bot)
 
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
     update.message.reply_text(pp.formulate('etwas-gemerkt'))
