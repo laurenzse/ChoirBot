@@ -18,13 +18,13 @@ reply_markup = InlineKeyboardMarkup(keyboard)
 
 
 def wish_song(bot, update, user_data, chat_data):
+    pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
 
     if choir_status.is_rehearsal_at_datetime(datetime.datetime.now(), 0.25):
         # the current next wishing member which is being presented to the user
         current_next_wish = next_wish_member(choir_status.get_choir_attribute(choir_status.LAST_WISH))
         chat_data['current_next_wish'] = current_next_wish
 
-        pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
         sent_message = update.message.reply_text(pp.formulate('wunschlied').format(next_wish_string(current_next_wish)),
                                                  reply_markup=reply_markup,
                                                  parse_mode=ParseMode.MARKDOWN)
@@ -32,7 +32,7 @@ def wish_song(bot, update, user_data, chat_data):
         # save the id of the last sent message to prevent editing data with older messages
         chat_data['last_sent_message_id'] = sent_message.message_id
     else:
-        update.message.reply_text("Das Wunschlied kann ich nur während der Probe anzeigen.")
+        update.message.reply_text(pp.formulate('wunsch-außer-probe'))
 
 
 def handle_callback(bot, update, user_data, chat_data):

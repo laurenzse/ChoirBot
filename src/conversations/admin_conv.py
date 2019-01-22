@@ -160,7 +160,7 @@ def add_handlers(dispatcher):
             ITEM_SELECTING_FOR_PRINT: [MessageHandler(Filters.text, print_item)],
             CHANGE_ITEM: [MessageHandler(Filters.text, perform_change, pass_user_data=True)],
             CONFIRM_RESET: [RegexHandler(confirm_regexes[0], reset_choir_attributes),
-                      RegexHandler(confirm_regexes[1], present_selection)],
+                            RegexHandler(confirm_regexes[1], present_selection)],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
         conversation_timeout=CONVERSATION_TIMEOUT
