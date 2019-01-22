@@ -7,9 +7,10 @@ from src.utils.group_members import BasicGroupMember
 from src.utils import message_jobs
 
 START = 'admin'
-SELECTING, ITEM_SELECTING_FOR_PRINT, ITEM_SELECTING_FOR_CHANGE, CHANGE_ITEM = range(4)
+SELECTING, ITEM_SELECTING_FOR_PRINT, ITEM_SELECTING_FOR_CHANGE, CHANGE_ITEM, CONFIRM_RESET = range(5)
 
 possible_operations_keyboard = [['Element ausgeben', 'Element ändern'], ['Verfügbare Elemente ausgeben', 'Alle Elemente zurücksetzen'], ['Zuletzt empfangene Nachrichten'], ['Jobs erneut erstellen'], ['Jetzt speichern'], ['Fertig']]
+confirm_keyboard = [['Ja', 'Nein']]
 
 CONVERSATION_TIMEOUT = 60 * 30 # after 30 minutes of inactivity, the conversation gets discarded
 
@@ -103,6 +104,13 @@ def recreate_jobs(bot, update):
     return present_selection(bot, update)
 
 
+def confirm_reset(bot, update):
+    update.message.reply_text('Möchtest du wirklich alle Attribute zurücksetzen?',
+                              reply_markup=ReplyKeyboardMarkup(confirm_keyboard, one_time_keyboard=True))
+
+    return CONFIRM_RESET
+
+
 def reset_choir_attributes(bot, update):
     choir_status.reset_to_default()
     choir_status.choir_attributes[choir_status.ADMINS] = [update.effective_user.id]
@@ -135,6 +143,7 @@ def cancel(bot, update):
 
 def add_handlers(dispatcher):
     operations_regexes = ['^{}'.format(item) for sublist in possible_operations_keyboard for item in sublist]
+    confirm_regexes = ['^{}'.format(item) for sublist in confirm_keyboard for item in sublist]
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler(START, present_selection, filters=Filters.private)],
@@ -142,14 +151,16 @@ def add_handlers(dispatcher):
             SELECTING: [RegexHandler(operations_regexes[0], ask_for_item_to_print),
                         RegexHandler(operations_regexes[1], ask_for_item_change),
                         RegexHandler(operations_regexes[2], print_items),
-                        RegexHandler(operations_regexes[3], reset_choir_attributes),
+                        RegexHandler(operations_regexes[3], confirm_reset),
                         RegexHandler(operations_regexes[4], recently_received_message),
                         RegexHandler(operations_regexes[5], recreate_jobs),
                         RegexHandler(operations_regexes[6], save_configuration),
                         RegexHandler(operations_regexes[7], done)],
             ITEM_SELECTING_FOR_CHANGE: [MessageHandler(Filters.text, ask_for_new_item_content, pass_user_data=True)],
             ITEM_SELECTING_FOR_PRINT: [MessageHandler(Filters.text, print_item)],
-            CHANGE_ITEM: [MessageHandler(Filters.text, perform_change, pass_user_data=True)]
+            CHANGE_ITEM: [MessageHandler(Filters.text, perform_change, pass_user_data=True)],
+            CONFIRM_RESET: [RegexHandler(confirm_regexes[0], reset_choir_attributes),
+                      RegexHandler(confirm_regexes[1], present_selection)],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
         conversation_timeout=CONVERSATION_TIMEOUT
