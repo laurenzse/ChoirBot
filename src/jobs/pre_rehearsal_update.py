@@ -84,7 +84,7 @@ def handle_absence_switch_callback(bot, update):
     if query.message.message_id != posted_update_message_id:
         pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
         query.edit_message_reply_markup(reply_markup=None)
-        query.edit_message_text(text=pp.formulate('illegal-action'))
+        # query.edit_message_text(text=pp.formulate('illegal-action'))
         return
 
     member = BasicGroupMember.from_telegram_user(update.effective_user)
