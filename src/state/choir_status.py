@@ -162,7 +162,7 @@ def get_gig():
     return gig
 
 
-# ## ABSCENES ##
+# ## ABSENCES ##
 
 def add_absence(user, start_date, end_date):
     absence = {'start': start_date, 'end': end_date}
@@ -209,7 +209,7 @@ def absences_at_date(date):
         absence_start = absence['start']
         absence_end = absence['end']
 
-        if absence_start <= date < absence_end:
+        if absence_start <= date <= absence_end:
             current_absences.append(absent_member)
 
     return current_absences

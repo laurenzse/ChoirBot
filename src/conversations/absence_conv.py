@@ -56,10 +56,10 @@ def start_absence_registration(message, user):
 
 def save_absence_once(bot, update):
     next_rehearsal = choir_status.next_rehearsal_date(datetime.date.today())
-    day_after = next_rehearsal + datetime.timedelta(1)
+    # day_after = next_rehearsal + datetime.timedelta(1)
 
     choir_status.remove_absence_of_user(update.effective_user)  # first try to remove an existing absence
-    choir_status.add_absence(update.effective_user, next_rehearsal, day_after)
+    choir_status.add_absence(update.effective_user, next_rehearsal, next_rehearsal)
     pre_rehearsal_update.refresh_posted_update(bot)
 
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
