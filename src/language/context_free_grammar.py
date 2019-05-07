@@ -152,7 +152,7 @@ def weighted_choice(weights):
 
 
 def cleanup(sentence):
-    sentence_end = ('.', '!', '?')
+    sentence_end = ('.', '!', '?', ')')
     punctuation = (',',)
 
     s = u" ".join(s.strip() for s in sentence.split('"') if s.strip())
@@ -164,4 +164,4 @@ def cleanup(sentence):
 
     # capitalize if control character found
     s = re.sub("@uppercase\s*(.)", lambda word: word.group(1).upper(), s)
-    return s[0].upper() + s[1:]
+    return s
