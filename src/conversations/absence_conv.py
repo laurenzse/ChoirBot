@@ -162,6 +162,7 @@ def add_handlers(dispatcher):
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler(START, register_absence, filters=Filters.private),
+                      CommandHandler(START, absence_recognized, filters=~ Filters.private),
                       RegexHandler(absent_regex(), absence_recognized)],
         states={
             SELECTION: [RegexHandler(new_abs_regexes[0], save_absence_once),
