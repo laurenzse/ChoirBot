@@ -31,8 +31,10 @@ def absence_recognized(bot, update):
     else:
         original_message = update.message
 
+    pp = PersonalPhrases(BasicGroupMember.from_telegram_user(original_message.from_user))
+
     bot.send_message(update.message.from_user.id,
-                     "Meine rostigen Augen haben erkannt, dass du vielleicht nicht kommen kannst.",
+                     pp.formulate('abwesend-erkannt'),
                      reply_to_message_id=original_message.message_id)
 
     return start_absence_registration(original_message, update.effective_user)
