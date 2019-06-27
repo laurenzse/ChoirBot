@@ -7,9 +7,9 @@ from src.utils.group_members import BasicGroupMember
 from src.utils import message_jobs
 
 START = 'admin'
-SELECTING, ITEM_SELECTING_FOR_PRINT, ITEM_SELECTING_FOR_CHANGE, CHANGE_ITEM, CONFIRM_RESET = range(5)
+SELECTING, ITEM_SELECTING_FOR_PRINT, ITEM_SELECTING_FOR_CHANGE, CHANGE_ITEM, CONFIRM_RESET, MEMBER_SELECTING = range(6)
 
-possible_operations_keyboard = [['Element ausgeben', 'Element ändern'], ['Verfügbare Elemente ausgeben', 'Alle Elemente zurücksetzen'], ['Zuletzt empfangene Nachrichten'], ['Jobs erneut erstellen'], ['Jetzt speichern'], ['Fertig']]
+possible_operations_keyboard = [['Element ausgeben', 'Element ändern'], ['Verfügbare Elemente ausgeben', 'Alle Elemente zurücksetzen'], ['Mitglieder ausgeben', 'Mitglied entfernen'], ['Zuletzt empfangene Nachrichten'], ['Jobs erneut erstellen'], ['Jetzt speichern'], ['Fertig']]
 confirm_keyboard = [['Ja', 'Nein']]
 
 CONVERSATION_TIMEOUT = 60 * 30 # after 30 minutes of inactivity, the conversation gets discarded
@@ -127,6 +127,48 @@ def save_configuration(bot, update):
     return present_selection(bot, update)
 
 
+def print_choir_members(bot, update):
+    members = bot_status.singer_watcher.members()
+    members_strings = [member_description(member) for member in members]
+    members_message = '\n\n'.join(members_strings)
+
+    for chunk in chunks(members_message, constants.MAX_MESSAGE_LENGTH):
+            update.message.reply_text(chunk)
+    return present_selection(bot, update)
+
+
+def member_description(member):
+    return "name: {}\nusername: {}\nuser_id: {}".format(member.full_name, member.username, member.id)
+
+
+# Create a function called "chunks" with two arguments, l and n:
+def chunks(l, n):
+    # For item i in a range that is a length of l,
+    for i in range(0, len(l), n):
+        # Create an index range for l of n items:
+        yield l[i:i+n]
+
+
+def ask_for_member_to_remove(bot, update):
+    update.message.reply_text('Welches Mitglied soll entfernt werden?')
+    return MEMBER_SELECTING
+
+
+def remove_member(bot, update):
+    user_search = update.message.text
+
+    members = bot_status.singer_watcher.members()
+    for member in members:
+        if member.full_name == user_search or member.username == user_search or str(member.id) == user_search:
+            bot_status.singer_watcher.remove_user(bot, member)
+            member_string = member_description(member)
+            update.message.reply_text("Folgendes Mitglied wurde entfernt:\n{}".format(member_string))
+            return present_selection(bot, update)
+
+    update.message.reply_text("Es konnte kein passendes Mitglied entfernt werden.")
+    return present_selection(bot, update)
+
+
 def done(bot, update):
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(update.effective_user))
     update.message.reply_text(pp.formulate('gern-geschehen'))
@@ -152,12 +194,15 @@ def add_handlers(dispatcher):
                         RegexHandler(operations_regexes[1], ask_for_item_change),
                         RegexHandler(operations_regexes[2], print_items),
                         RegexHandler(operations_regexes[3], confirm_reset),
-                        RegexHandler(operations_regexes[4], recently_received_message),
-                        RegexHandler(operations_regexes[5], recreate_jobs),
-                        RegexHandler(operations_regexes[6], save_configuration),
-                        RegexHandler(operations_regexes[7], done)],
+                        RegexHandler(operations_regexes[4], print_choir_members),
+                        RegexHandler(operations_regexes[5], ask_for_member_to_remove),
+                        RegexHandler(operations_regexes[6], recently_received_message),
+                        RegexHandler(operations_regexes[7], recreate_jobs),
+                        RegexHandler(operations_regexes[8], save_configuration),
+                        RegexHandler(operations_regexes[9], done)],
             ITEM_SELECTING_FOR_CHANGE: [MessageHandler(Filters.text, ask_for_new_item_content, pass_user_data=True)],
             ITEM_SELECTING_FOR_PRINT: [MessageHandler(Filters.text, print_item)],
+            MEMBER_SELECTING: [MessageHandler(Filters.text, remove_member)],
             CHANGE_ITEM: [MessageHandler(Filters.text, perform_change, pass_user_data=True)],
             CONFIRM_RESET: [RegexHandler(confirm_regexes[0], reset_choir_attributes),
                             RegexHandler(confirm_regexes[1], present_selection)],

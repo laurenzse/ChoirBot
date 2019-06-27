@@ -34,7 +34,7 @@ class GroupMemberWatcher(AbstractWatcher):
 
         left_member = message.left_chat_member
         if left_member is not None and self.user_known(bot, left_member):
-            self.remove_user(left_member)
+            self.remove_user(bot, left_member)
 
     def telegram_user_encountered(self, bot, user):
         # check whether we know this user and either add them or update their details
@@ -56,11 +56,11 @@ class GroupMemberWatcher(AbstractWatcher):
     def user_known(self, bot, user):
         return self.telegram_user_known(bot, user) or self.basic_member_known(user)
 
-    def remove_user(self, user):
+    def remove_user(self, bot, user):
         if self.basic_member_known(user):
             self.remove_basic_member(user)
 
-        if self.telegram_user_known(self, user):
+        if self.telegram_user_known(bot, user):
             self.remove_telegram_user(user)
 
     def update_telegram_user_details(self, user):
