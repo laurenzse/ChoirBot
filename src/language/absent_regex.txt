@@ -1,1 +1,1 @@
-.*((?i)(nicht)[^\.\!\?\,]*(?i)(dabei|kommen|gesund|da)|(?i)(wird)[^\.\!\?\,]*(?i)(nichts)|(?i)(krank)|(?i)(kann)[^\.\!\?\,]*(?i)(nicht)).*
+.*((?i)(nicht)[^\.\!\?\,]*(?i)(dabei|kommen|gesund|da|schaffen)|(?i)(wird)[^\.\!\?\,]*(?i)(nichts)|(?i)(krank|aussetze|absage)|(?i)(kann|komme)[^\.\!\?\,]*(?i)(nicht)).*|(?i)(bin)[^\.\!\?\,]*(?i)(raus).*
