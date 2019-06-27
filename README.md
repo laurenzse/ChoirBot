@@ -49,7 +49,7 @@ Check out the [Telegram bot introduction](https://core.telegram.org/bots) to see
 touch data/members.txt 
 ```
 
-Telegram's API does not disclose the members present in a group chat. The bot will therefore work based on the user activity it sees within the group chat and update it's list accordingly. If your group chat already contains members, you can add these members manually in the `members.txt` file. See `members_sample.txt` for the format expected.
+Telegram's API does not disclose the members present in a group chat. The bot will therefore work based on the user activity it sees within the group chat and update it's list accordingly. If your group chat already contains members, you can add these members manually in the `members.txt` file. The bot will import the members from this file if it has not met any Telegram users yet. See `members_sample.txt` for the format expected.
 
 5. **Edit `data/choir_status.json`**
 
