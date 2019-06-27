@@ -6,29 +6,35 @@ import requests
 import re
 import random
 
+WELCOME, GOODBYE = range(2)
+SAYINGS_URL = {WELCOME: "https://sprueche.woxikon.de/freundschaft", GOODBYE: "https://sprueche.woxikon.de/abschied"}
+loaded_sayings = {}
+
 
 def welcome(bot, update):
     message = update.message
     new_member = message.new_chat_members[0]
 
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(new_member))
-    update.message.reply_text(pp.formulate('willkommen') + " " + random.choice(welcome_sayings))
+    update.message.reply_text(pp.formulate('willkommen') + " " + random.choice(get_saying(WELCOME)))
 
 
 def goodbye(bot, update):
-    update.message.reply_text(random.choice(goodbye_sayings))
+    update.message.reply_text(random.choice(get_saying(GOODBYE)))
 
 
-def get_sayings(page):
+def get_saying(saying):
+    if saying not in loaded_sayings:
+        loaded_sayings[saying] = get_sayings_from_url(SAYINGS_URL[saying])
+    return loaded_sayings[saying]
+
+
+def get_sayings_from_url(page):
     html = requests.get(page).text
     tree = etree.HTML(html)
     results = tree.xpath('//*[@id="content"]/div[3]/div[2]/div[2]/ul/li/div/div/a/text()')
 
     return [re.findall(r'\n\s*(\w.*)\n', result)[0] for result in results]
-
-
-goodbye_sayings = get_sayings("https://sprueche.woxikon.de/abschied")
-welcome_sayings = get_sayings("https://sprueche.woxikon.de/freundschaft")
 
 
 def add_handlers(dispatcher):
