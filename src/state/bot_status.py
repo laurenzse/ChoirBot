@@ -45,7 +45,8 @@ choir_chat_id = choir_status.choir_attributes[choir_status.CHOIR_CHAT_ID]
 singer_watcher = GroupMemberWatcher(group_chat_id=choir_chat_id, handler_group=next_service_handler_group())
 if configuration_exists(SINGER_WATCHER_FILE):
     singer_watcher.load_members(SINGER_WATCHER_FILE)
-singer_watcher.import_basic_members(SINGERS)
+if not singer_watcher.members():    # only import singers, if no other singers exist
+    singer_watcher.import_basic_members(SINGERS)
 
 all_members_watcher = GroupMemberWatcher(group_chat_id=None, handler_group=next_service_handler_group())
 if configuration_exists(ALL_MEMBERS_FILE):
