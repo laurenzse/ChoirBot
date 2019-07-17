@@ -28,6 +28,8 @@ def register_absence(bot, update):
 def absence_recognized(bot, update):
     if update.effective_chat.id != update.message.from_user.id:
         original_message = bot.forward_message(update.message.from_user.id, update.effective_chat.id, update.message.message_id)
+
+        pre_rehearsal_update.absence_mentioned(bot)
     else:
         original_message = update.message
 

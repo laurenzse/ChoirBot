@@ -7,6 +7,7 @@ from src.state import choir_status
 from src.utils.group_members import BasicGroupMember
 
 reminder_before = datetime.timedelta(minutes=60)
+triggered_by_mention_threshold = datetime.timedelta(hours=10)
 
 keyboard = [[InlineKeyboardButton("Meine Anwesenheit ändern", callback_data='change_absence')]]
 reply_markup = InlineKeyboardMarkup(keyboard)
@@ -48,7 +49,7 @@ def gig_text():
         gig = choir_status.get_gig()
 
         if weeks_until_gig == 1:
-            text = "Noch eine Probe bis zum Auftritt {}!".format(gig['name'])
+            text = "Dies ist die letze Probe vor dem Auftritt {}!".format(gig['name'])
         elif weeks_until_gig >= 1:
             text = "Bis zum Auftritt {} noch {} Proben!".format(gig['name'], weeks_until_gig)
 
@@ -67,6 +68,10 @@ def generate_reminders_list(reminders):
 
 def post_update(bot, job):
     global posted_update_message_id
+
+    if posted_update_message_id:    # if the update has already been posted (by absence_mentioned) do not post it again
+        return                      # posted_update_message_id will be reset by post_rehearsal_update
+
     chat_id = choir_status.get_choir_attribute(choir_status.CHOIR_CHAT_ID)
 
     full_update_text = update_text()
@@ -103,6 +108,11 @@ def refresh_posted_update(bot):
                           message_id=posted_update_message_id,
                           chat_id=chat_id,
                           reply_markup=reply_markup)
+
+
+def absence_mentioned(bot):
+    if update_datetime() - triggered_by_mention_threshold < datetime.datetime.now():
+        post_update(bot, None)
 
 
 def toggle_absences_for_member(member):
