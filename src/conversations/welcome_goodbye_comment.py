@@ -16,11 +16,14 @@ def welcome(bot, update):
     new_member = message.new_chat_members[0]
 
     pp = PersonalPhrases(BasicGroupMember.from_telegram_user(new_member))
-    update.message.reply_text(pp.formulate('willkommen') + " " + random.choice(get_saying(WELCOME)))
+
+    bot.send_message(chat_id=update.effective_chat.id,
+                     text=pp.formulate('willkommen') + " " + random.choice(get_saying(WELCOME)))
 
 
 def goodbye(bot, update):
-    update.message.reply_text(random.choice(get_saying(GOODBYE)))
+    bot.send_message(chat_id=update.effective_chat.id,
+                     text=random.choice(get_saying(GOODBYE)))
 
 
 def get_saying(saying):
