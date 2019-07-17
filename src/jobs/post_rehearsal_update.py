@@ -5,7 +5,7 @@ from telegram import ParseMode
 from src.language.phrases import formulate
 from src.state import choir_status
 from src.jobs import pre_rehearsal_update
-POST_PROBABILTY = 0.6
+POST_PROBABILTY = 0.2
 
 reminder_after = datetime.timedelta(minutes=choir_status.get_choir_attribute(choir_status.REHEARSAL_DURATION) * 0.75)
 
