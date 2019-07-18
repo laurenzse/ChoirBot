@@ -4,8 +4,8 @@ from random import randint
 from src.language.phrases import formulate
 from src.state import choir_status
 
-MIN_WAIT_MINUTES = 2 * 60 # 2 hours
-MAX_WAIT_MINUTES = 3 * 7 * 24 * 60 # 3 weeks
+MIN_WAIT_MINUTES = 2 * 7 * 24 * 60 # 2 weeks
+MAX_WAIT_MINUTES = 9 * 7 * 24 * 60 # 9 weeks
 
 
 def write_nonsense(bot, job):
