@@ -4,7 +4,7 @@ from telegram.ext import MessageHandler, Filters
 class AbstractWatcher:
 
     def __init__(self, group_chat_id=None, handler_group=-1):
-        self.handler = MessageHandler(Filters.all, self.interaction)
+        self.handler = MessageHandler(Filters.all, self.check_interaction)
         self.dispatcher = None
         self.group_chat_id = group_chat_id
         self.handler_group = handler_group
