@@ -22,5 +22,7 @@ ENV LANGUAGE de_DE:de
 
 # Bundle app source
 ADD src/ /app/src/
+# Add readme too, since the bot needs it for printing help
+COPY README.md ./
 
 CMD ["python3", "-m", "src.main"]
