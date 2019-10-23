@@ -37,7 +37,8 @@ def get_sayings_from_url(page):
     tree = etree.HTML(html)
     results = tree.xpath('//*[@id="content"]/div[3]/div[2]/div[2]/ul/li/div/div/a/text()')
 
-    return [re.findall(r'\n\s*(\w.*)\n', result)[0] for result in results]
+    # first remove all surrounding whitespace with strip(), then remove formatting from remaining string by joining the words with a space
+    return [' '.join(result.strip().split()) for result in results]
 
 
 def add_handlers(dispatcher):
