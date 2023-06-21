@@ -6,7 +6,7 @@ from telegram.ext import (Updater)
 from telegram.utils.request import Request
 
 from src.conversations import absence_conv, wish_song_conv, confused_comment, remind_conv, admin_conv, mechanical_turk, \
-    help_conv, gig_conv, professor_comment, welcome_goodbye_comment, start_conv
+    help_conv, gig_conv, welcome_goodbye_comment, start_conv
 from src.jobs import pre_rehearsal_update, post_rehearsal_update, nonsense_update, save_job
 from src.state import choir_status
 from src.state.bot_status import singer_watcher, all_members_watcher, all_messages_watcher, logger, \
@@ -55,7 +55,6 @@ def main():
     thank_you_comment.add_handlers(dp)
     mechanical_turk.add_handlers(dp)
     welcome_goodbye_comment.add_handlers(dp)
-    professor_comment.add_handlers(dp)
 
     utils.message_jobs.job_queue = updater.job_queue
     utils.message_jobs.add_job('PRE_REHEARSAL_UPDATE',
